@@ -19,7 +19,6 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function Calendar() {
@@ -61,32 +60,32 @@ export function Calendar() {
     };
 
     return (
-        <Card className="w-full h-full shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-                <CardTitle className="text-2xl font-bold capitalize">
+        <Card className="w-full shadow-xl border-none bg-background/60 backdrop-blur-xl">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 pt-6 px-6">
+                <CardTitle className="text-3xl font-light tracking-tight text-foreground/80">
                     {getMonthTitle(currentDate)}
                 </CardTitle>
                 <div className="flex gap-1">
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={handlePrevMonth}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-background/50" onClick={handlePrevMonth}>
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={handleNextMonth}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-background/50" onClick={handleNextMonth}>
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6">
                 {/* Weekday Headers */}
-                <div className="grid grid-cols-7 gap-1 mb-2 text-center">
+                <div className="grid grid-cols-7 mb-4 text-center">
                     {weekDays.map((day) => (
-                        <div key={day} className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        <div key={day} className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest">
                             {day}
                         </div>
                     ))}
                 </div>
 
                 {/* The Grid */}
-                <div className="grid grid-cols-7 gap-px bg-muted/20 rounded-lg overflow-hidden border">
+                <div className="grid grid-cols-7 gap-2">
                     {days.map((day, index) => {
                         const dayTasks = getTasksForDay(day.date);
                         return (
@@ -94,33 +93,24 @@ export function Calendar() {
                                 key={index}
                                 onClick={() => handleDayClick(day.date)}
                                 className={cn(
-                                    "min-h-[80px] md:min-h-[100px] p-2 bg-background transition-colors hover:bg-accent/50 cursor-pointer flex flex-col gap-1 relative group",
-                                    !day.isCurrentMonth && "bg-muted/5 text-muted-foreground",
-                                    day.isToday && "bg-accent/20"
+                                    "aspect-square p-2 rounded-2xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center gap-1 relative group hover:shadow-md hover:-translate-y-0.5",
+                                    !day.isCurrentMonth && "opacity-20 hover:opacity-50",
+                                    day.isToday ? "bg-primary/10 text-primary font-bold shadow-inner" : "hover:bg-background/80"
                                 )}
                             >
-                                <div className={cn(
-                                    "text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full ml-auto",
-                                    day.isToday ? "bg-primary text-primary-foreground" : "text-muted-foreground"
-                                )}>
-                                    {day.date.getDate()}
-                                </div>
+                                <div className="text-sm">{day.date.getDate()}</div>
 
-                                {/* Tasks */}
-                                <div className="flex flex-col gap-1 mt-1">
+                                {/* Tasks Dots */}
+                                <div className="flex gap-0.5 h-1">
                                     {dayTasks.slice(0, 3).map((task) => (
                                         <div
                                             key={task.id}
                                             className={cn(
-                                                "h-1.5 rounded-full w-full",
-                                                task.completed ? "bg-muted-foreground/30" : "bg-primary/70"
+                                                "h-1 w-1 rounded-full",
+                                                task.completed ? "bg-muted-foreground/30" : "bg-primary/60"
                                             )}
-                                            title={task.text}
                                         />
                                     ))}
-                                    {dayTasks.length > 3 && (
-                                        <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50 mx-auto" />
-                                    )}
                                 </div>
                             </div>
                         );
@@ -128,38 +118,37 @@ export function Calendar() {
                 </div>
             </CardContent>
 
-            {/* Task Dialog */}
+            {/* Task Dialog - Simplified */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[400px] border-none shadow-2xl bg-background/95 backdrop-blur-md">
                     <DialogHeader>
-                        <DialogTitle>
+                        <DialogTitle className="text-xl font-light">
                             {selectedDate ? format(selectedDate, "EEEE, MMMM do") : "Tasks"}
                         </DialogTitle>
                     </DialogHeader>
 
-                    <div className="py-4 space-y-2 max-h-[300px] overflow-y-auto">
+                    <div className="py-6 space-y-3 max-h-[300px] overflow-y-auto px-1">
                         {selectedDate && getTasksForDay(selectedDate).length === 0 && (
-                            <div className="text-center py-8 text-muted-foreground">
-                                <p>No tasks yet.</p>
-                                <p className="text-xs">Type below to add one!</p>
+                            <div className="text-center py-4 text-muted-foreground/50 italic text-sm">
+                                No tasks for this day.
                             </div>
                         )}
                         {selectedDate && getTasksForDay(selectedDate).map(task => (
-                            <div key={task.id} className="flex items-center justify-between bg-muted/30 p-2 rounded-md group hover:bg-muted/50 transition-colors">
+                            <div key={task.id} className="flex items-center justify-between group animate-in fade-in slide-in-from-bottom-2 duration-300">
                                 <div className="flex items-center gap-3 overflow-hidden flex-1">
                                     <button
                                         onClick={() => toggleTask(format(selectedDate, "yyyy-MM-dd"), task.id)}
                                         className="text-muted-foreground hover:text-primary transition-colors"
                                     >
-                                        {task.completed ? <CheckCircle2 className="h-5 w-5 text-green-500" /> : <Circle className="h-5 w-5" />}
+                                        {task.completed ? <CheckCircle2 className="h-5 w-5 text-primary/50" /> : <Circle className="h-5 w-5" />}
                                     </button>
-                                    <span className={cn("text-sm truncate flex-1", task.completed && "line-through text-muted-foreground")}>{task.text}</span>
+                                    <span className={cn("text-sm truncate flex-1 transition-all", task.completed && "line-through text-muted-foreground/50")}>{task.text}</span>
                                 </div>
                                 <button
                                     onClick={() => deleteTask(format(selectedDate, "yyyy-MM-dd"), task.id)}
-                                    className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10 p-1 rounded"
+                                    className="opacity-0 group-hover:opacity-100 transition-all text-destructive/70 hover:text-destructive hover:bg-destructive/10 p-1.5 rounded-full"
                                 >
-                                    <Trash2 className="h-4 w-4" />
+                                    <Trash2 className="h-3.5 w-3.5" />
                                 </button>
                             </div>
                         ))}
@@ -169,11 +158,11 @@ export function Calendar() {
                         <Input
                             value={newTaskText}
                             onChange={(e) => setNewTaskText(e.target.value)}
-                            placeholder="Add a task..."
-                            className="flex-1"
+                            placeholder="New task..."
+                            className="flex-1 bg-muted/20 border-none focus-visible:ring-1"
                             autoFocus
                         />
-                        <Button type="submit" size="icon">
+                        <Button type="submit" size="icon" variant="secondary" className="shrink-0">
                             <Plus className="h-4 w-4" />
                         </Button>
                     </form>

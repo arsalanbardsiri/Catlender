@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export function CatIntegration() {
     const [catImage, setCatImage] = useState<string | null>(null);
@@ -33,24 +34,10 @@ export function CatIntegration() {
     }, []);
 
     return (
-        <Card className="overflow-hidden h-full flex flex-col">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-                    Daily Inspiration
-                </CardTitle>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={fetchCatData}
-                    disabled={loading}
-                >
-                    <RefreshCw className={`h-3 w-3 ${loading ? "animate-spin" : ""}`} />
-                </Button>
-            </CardHeader>
-            <CardContent className="flex-1 flex flex-col gap-4">
-                {/* Cat Image */}
-                <div className="relative aspect-square w-full overflow-hidden rounded-md border bg-muted">
+        <Card className="overflow-hidden border-none shadow-lg bg-background/60 backdrop-blur-sm">
+            <CardContent className="p-0 flex flex-col sm:flex-row h-auto sm:h-32">
+                {/* Cat Image - Fixed Square on Left */}
+                <div className="relative w-full sm:w-32 h-32 sm:h-full shrink-0 bg-muted">
                     {loading ? (
                         <Skeleton className="h-full w-full" />
                     ) : (
@@ -58,25 +45,40 @@ export function CatIntegration() {
                             <img
                                 src={catImage}
                                 alt="Random Cat"
-                                className="h-full w-full object-cover transition-all hover:scale-105"
+                                className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
                             />
                         )
                     )}
                 </div>
 
-                {/* Cat Fact */}
-                <div className="flex-1 flex flex-col justify-center">
-                    {loading ? (
-                        <div className="space-y-2">
-                            <Skeleton className="h-3 w-full" />
-                            <Skeleton className="h-3 w-[90%]" />
-                        </div>
-                    ) : (
-                        <blockquote className="relative border-l-2 pl-4 italic text-muted-foreground text-sm">
-                            <Quote className="h-3 w-3 absolute -top-2 -left-1 text-muted-foreground/20" />
-                            "{catFact}"
-                        </blockquote>
-                    )}
+                {/* Content Area */}
+                <div className="flex-1 p-4 flex flex-col justify-center relative group">
+                    {/* Refresh Button - Absolute Top Right */}
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={fetchCatData}
+                        disabled={loading}
+                    >
+                        <RefreshCw className={cn("h-3 w-3", loading && "animate-spin")} />
+                    </Button>
+
+                    <div className="pr-6">
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">
+                            Daily Wisdom
+                        </h3>
+                        {loading ? (
+                            <div className="space-y-2">
+                                <Skeleton className="h-3 w-3/4" />
+                                <Skeleton className="h-3 w-1/2" />
+                            </div>
+                        ) : (
+                            <p className="text-sm font-medium italic text-foreground/90 leading-relaxed line-clamp-3">
+                                "{catFact}"
+                            </p>
+                        )}
+                    </div>
                 </div>
             </CardContent>
         </Card>

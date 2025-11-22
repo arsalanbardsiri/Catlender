@@ -3,22 +3,17 @@ import { CatIntegration } from "@/components/cat-integration";
 
 export default function Home() {
   return (
-    <main className="container mx-auto p-4 md:p-8 min-h-[calc(100vh-3.5rem)]">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
-        {/* Main Calendar Area (8 cols) */}
-        <div className="lg:col-span-8 xl:col-span-9 h-full">
-          <Calendar />
-        </div>
-
-        {/* Sidebar Area (4 cols) */}
-        <div className="lg:col-span-4 xl:col-span-3 flex flex-col gap-6">
+    <main className="container mx-auto p-4 md:p-8 min-h-[calc(100vh-3.5rem)] flex flex-col items-center">
+      <div className="w-full max-w-3xl flex flex-col gap-8 animate-in fade-in duration-700 slide-in-from-bottom-4">
+        {/* Hero Section: The Cat Banner */}
+        <section className="w-full">
           <CatIntegration />
+        </section>
 
-          {/* Placeholder for future widgets */}
-          <div className="rounded-lg border border-dashed p-4 text-center text-sm text-muted-foreground bg-muted/10 h-32 flex items-center justify-center">
-            More widgets coming soon...
-          </div>
-        </div>
+        {/* Main Workspace: The Glass Calendar */}
+        <section className="w-full flex-1">
+          <Calendar />
+        </section>
       </div>
     </main>
   );
