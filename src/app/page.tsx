@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Calendar } from "@/components/calendar";
 import { CatIntegration } from "@/components/cat-integration";
+import { CatConcierge } from "@/components/cat-concierge";
 import { AuthForm } from "@/components/auth-form";
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
@@ -45,6 +46,11 @@ export default function Home() {
         {/* Hero Section: The Cat Banner */}
         <section className="w-full">
           <CatIntegration />
+        </section>
+
+        {/* AI Section: The Concierge */}
+        <section className="w-full">
+          <CatConcierge />
         </section>
 
         {/* Main Workspace: The Glass Calendar */}
