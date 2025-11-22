@@ -118,7 +118,7 @@ export function Calendar() {
                 </div>
             </CardContent>
 
-            {/* Task Dialog - Simplified */}
+            {/* Task Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent className="sm:max-w-[400px] border-none shadow-2xl bg-background/95 backdrop-blur-md">
                     <DialogHeader>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { RefreshCw, Quote } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -34,10 +34,10 @@ export function CatIntegration() {
     }, []);
 
     return (
-        <Card className="overflow-hidden border-none shadow-lg bg-background/60 backdrop-blur-sm">
-            <CardContent className="p-0 flex flex-col sm:flex-row h-auto sm:h-32">
-                {/* Cat Image - Fixed Square on Left */}
-                <div className="relative w-full sm:w-32 h-32 sm:h-full shrink-0 bg-muted">
+        <Card className="overflow-hidden border-none shadow-sm bg-background/40 backdrop-blur-sm">
+            <CardContent className="p-3 flex items-center gap-4">
+                {/* Cat Image - Tiny Avatar */}
+                <div className="relative w-12 h-12 shrink-0 rounded-full overflow-hidden bg-muted ring-2 ring-border/50">
                     {loading ? (
                         <Skeleton className="h-full w-full" />
                     ) : (
@@ -45,40 +45,36 @@ export function CatIntegration() {
                             <img
                                 src={catImage}
                                 alt="Random Cat"
-                                className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+                                className="h-full w-full object-cover"
                             />
                         )
                     )}
                 </div>
 
                 {/* Content Area */}
-                <div className="flex-1 p-4 flex flex-col justify-center relative group">
-                    {/* Refresh Button - Absolute Top Right */}
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                        onClick={fetchCatData}
-                        disabled={loading}
-                    >
-                        <RefreshCw className={cn("h-3 w-3", loading && "animate-spin")} />
-                    </Button>
-
-                    <div className="pr-6">
-                        <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">
+                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                             Daily Wisdom
                         </h3>
-                        {loading ? (
-                            <div className="space-y-2">
-                                <Skeleton className="h-3 w-3/4" />
-                                <Skeleton className="h-3 w-1/2" />
-                            </div>
-                        ) : (
-                            <p className="text-sm font-medium italic text-foreground/90 leading-relaxed line-clamp-3">
-                                "{catFact}"
-                            </p>
-                        )}
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-5 w-5 text-muted-foreground hover:text-foreground"
+                            onClick={fetchCatData}
+                            disabled={loading}
+                        >
+                            <RefreshCw className={cn("h-3 w-3", loading && "animate-spin")} />
+                        </Button>
                     </div>
+
+                    {loading ? (
+                        <Skeleton className="h-3 w-3/4 mt-1" />
+                    ) : (
+                        <p className="text-xs font-medium text-foreground/80 truncate" title={catFact || ""}>
+                            "{catFact}"
+                        </p>
+                    )}
                 </div>
             </CardContent>
         </Card>
