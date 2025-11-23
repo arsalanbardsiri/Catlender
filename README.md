@@ -4,7 +4,7 @@
 
 Catlender is a whimsical yet powerful task management application that combines a beautiful, glassmorphic UI with advanced AI capabilities. It features a "Cat Concierge" that analyzes your schedule, provides daily briefings, and even suggests rescheduling tasks when you're overloaded—all with a charming feline personality.
 
-![Catlender Preview](public/assets/preview.png)
+![Catlender Preview](public/preview.png)
 
 ## ✨ Features
 
