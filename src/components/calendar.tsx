@@ -60,7 +60,7 @@ export function Calendar() {
     };
 
     return (
-        <Card className="w-full shadow-xl border-none bg-background/60 backdrop-blur-xl">
+        <Card className="w-full shadow-2xl border-none bg-gradient-to-br from-background/60 to-background/30 backdrop-blur-2xl ring-1 ring-white/10">
             <CardHeader className="flex flex-row items-center justify-between pb-2 pt-6 px-6">
                 <CardTitle className="text-3xl font-light tracking-tight text-foreground/80">
                     {getMonthTitle(currentDate)}
@@ -88,29 +88,46 @@ export function Calendar() {
                 <div className="grid grid-cols-7 gap-2">
                     {days.map((day, index) => {
                         const dayTasks = getTasksForDay(day.date);
+                        const isSelected = selectedDate && format(day.date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd");
+
                         return (
                             <div
                                 key={index}
                                 onClick={() => handleDayClick(day.date)}
                                 className={cn(
-                                    "aspect-square p-2 rounded-2xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center gap-1 relative group hover:shadow-md hover:-translate-y-0.5",
-                                    !day.isCurrentMonth && "opacity-20 hover:opacity-50",
-                                    day.isToday ? "bg-primary/10 text-primary font-bold shadow-inner" : "hover:bg-background/80"
+                                    "aspect-square p-2 rounded-xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-between relative group hover:shadow-lg hover:-translate-y-0.5 border border-transparent",
+                                    !day.isCurrentMonth && "opacity-30 hover:opacity-60",
+                                    day.isToday && "bg-primary/20 text-primary font-bold ring-1 ring-primary/30",
+                                    isSelected && "bg-primary text-primary-foreground shadow-primary/20 shadow-xl scale-105 z-10",
+                                    !day.isToday && !isSelected && "hover:bg-white/5 hover:border-white/10"
                                 )}
                             >
-                                <div className="text-sm">{day.date.getDate()}</div>
+                                <div className="text-sm font-medium mb-1">{day.date.getDate()}</div>
 
-                                {/* Tasks Dots */}
-                                <div className="flex gap-0.5 h-1">
+                                {/* Task Text Previews */}
+                                <div className="flex flex-col gap-1 w-full px-0.5 flex-1 overflow-hidden">
                                     {dayTasks.slice(0, 3).map((task) => (
                                         <div
                                             key={task.id}
                                             className={cn(
-                                                "h-1 w-1 rounded-full",
-                                                task.completed ? "bg-muted-foreground/30" : "bg-primary/60"
+                                                "text-[10px] sm:text-xs px-1.5 py-0.5 rounded-sm truncate font-medium transition-all",
+                                                task.completed
+                                                    ? "bg-emerald-500/10 text-emerald-500 line-through opacity-70"
+                                                    : "bg-primary/10 text-primary hover:bg-primary/20",
+                                                isSelected && "bg-white/20 text-white"
                                             )}
-                                        />
+                                        >
+                                            {task.text}
+                                        </div>
                                     ))}
+                                    {dayTasks.length > 3 && (
+                                        <div className={cn(
+                                            "text-[10px] sm:text-xs px-1 font-medium text-muted-foreground",
+                                            isSelected && "text-white/70"
+                                        )}>
+                                            +{dayTasks.length - 3} more
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         );
@@ -146,7 +163,7 @@ export function Calendar() {
                                 </div>
                                 <button
                                     onClick={() => deleteTask(format(selectedDate, "yyyy-MM-dd"), task.id)}
-                                    className="opacity-0 group-hover:opacity-100 transition-all text-destructive/70 hover:text-destructive hover:bg-destructive/10 p-1.5 rounded-full"
+                                    className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all text-destructive/70 hover:text-destructive hover:bg-destructive/10 p-1.5 rounded-full"
                                 >
                                     <Trash2 className="h-3.5 w-3.5" />
                                 </button>

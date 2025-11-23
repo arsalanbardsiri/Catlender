@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { Calendar } from "@/components/calendar";
-import { CatIntegration } from "@/components/cat-integration";
+
 import { CatConcierge } from "@/components/cat-concierge";
+import { WeatherForecast } from "@/components/weather-forecast";
 import { AuthForm } from "@/components/auth-form";
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
@@ -42,21 +43,24 @@ export default function Home() {
 
   return (
     <main className="container mx-auto p-4 min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center">
-      <div className="w-full max-w-md flex flex-col gap-4 animate-in fade-in duration-700 slide-in-from-bottom-4">
-        {/* Hero Section: The Cat Banner */}
+      <div className="w-full max-w-md flex flex-col gap-6 animate-in fade-in duration-700 slide-in-from-bottom-4">
+
+        {/* Top: Weather Forecast */}
         <section className="w-full">
-          <CatIntegration />
+          <WeatherForecast />
         </section>
 
-        {/* AI Section: The Concierge */}
+        {/* Middle: AI Concierge */}
         <section className="w-full">
           <CatConcierge />
         </section>
 
-        {/* Main Workspace: The Glass Calendar */}
+        {/* Main: Calendar */}
         <section className="w-full flex-1">
           <Calendar />
         </section>
+
+
       </div>
     </main>
   );

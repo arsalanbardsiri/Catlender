@@ -124,5 +124,34 @@ export function useTasks() {
         }
     };
 
-    return { tasks, addTask, deleteTask, toggleTask, loading };
+    const moveTask = async (taskId: string, oldDate: string, newDate: string) => {
+        // Optimistic Update
+        setTasks((prev) => {
+            const oldList = prev[oldDate] || [];
+            const taskToMove = oldList.find((t) => t.id === taskId);
+
+            if (!taskToMove) return prev;
+
+            const newList = prev[newDate] || [];
+
+            return {
+                ...prev,
+                [oldDate]: oldList.filter((t) => t.id !== taskId),
+                [newDate]: [...newList, taskToMove]
+            };
+        });
+
+        // DB Call
+        const { error } = await supabase
+            .from("tasks")
+            .update({ date: newDate })
+            .eq("id", taskId);
+
+        if (error) {
+            console.error("Error moving task:", error);
+            // In a real app, we would revert here
+        }
+    };
+
+    return { tasks, addTask, deleteTask, toggleTask, moveTask, loading };
 }
