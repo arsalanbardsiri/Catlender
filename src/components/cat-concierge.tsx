@@ -157,6 +157,7 @@ export function CatConcierge() {
                                 className="h-8 text-xs gap-1.5 hover:bg-destructive/10 hover:text-destructive text-foreground/70"
                                 onClick={handleRescheduleRequest}
                                 disabled={rescheduleLoading || loading}
+                                aria-label="Reschedule tasks"
                             >
                                 <CalendarClock className={cn("h-3.5 w-3.5", rescheduleLoading && "animate-spin")} />
                                 {rescheduleLoading ? "Checking..." : "Reschedule"}
@@ -167,6 +168,7 @@ export function CatConcierge() {
                                 className="h-8 text-xs gap-1.5 hover:bg-primary/10 hover:text-primary text-foreground/70"
                                 onClick={handleAnalyze}
                                 disabled={loading || rescheduleLoading}
+                                aria-label="Analyze schedule with AI"
                             >
                                 <Sparkles className={cn("h-3.5 w-3.5", loading && "animate-spin")} />
                                 {loading ? "Thinking..." : "Analyze"}

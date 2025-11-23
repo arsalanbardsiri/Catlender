@@ -156,6 +156,7 @@ export function Calendar() {
                                     <button
                                         onClick={() => toggleTask(format(selectedDate, "yyyy-MM-dd"), task.id)}
                                         className="text-muted-foreground hover:text-primary transition-colors"
+                                        aria-label={task.completed ? "Mark as incomplete" : "Mark as complete"}
                                     >
                                         {task.completed ? <CheckCircle2 className="h-5 w-5 text-primary/50" /> : <Circle className="h-5 w-5" />}
                                     </button>
@@ -164,6 +165,7 @@ export function Calendar() {
                                 <button
                                     onClick={() => deleteTask(format(selectedDate, "yyyy-MM-dd"), task.id)}
                                     className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all text-destructive/70 hover:text-destructive hover:bg-destructive/10 p-1.5 rounded-full"
+                                    aria-label="Delete task"
                                 >
                                     <Trash2 className="h-3.5 w-3.5" />
                                 </button>
@@ -179,12 +181,12 @@ export function Calendar() {
                             className="flex-1 bg-muted/20 border-none focus-visible:ring-1"
                             autoFocus
                         />
-                        <Button type="submit" size="icon" variant="secondary" className="shrink-0">
+                        <Button type="submit" size="icon" variant="secondary" className="shrink-0" aria-label="Add new task">
                             <Plus className="h-4 w-4" />
                         </Button>
                     </form>
                 </DialogContent>
             </Dialog>
-        </Card>
+        </Card >
     );
 }

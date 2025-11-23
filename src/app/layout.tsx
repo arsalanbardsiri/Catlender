@@ -7,8 +7,28 @@ import { Header } from "@/components/header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Catlendar 2025",
-  description: "The purr-fect calendar for your tasks.",
+  title: {
+    default: "Catlender | Purr-fect Task Management",
+    template: "%s | Catlender",
+  },
+  description: "A whimsical, AI-powered task manager that helps you organize your life with the help of a digital cat concierge.",
+  openGraph: {
+    title: "Catlender | Purr-fect Task Management",
+    description: "Organize your life with the help of a digital cat concierge.",
+    url: "https://catlender.vercel.app",
+    siteName: "Catlender",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Catlender",
+    description: "The purr-fect calendar for your tasks.",
+  },
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
 };
 
 export default function RootLayout({
