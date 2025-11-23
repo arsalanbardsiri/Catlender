@@ -10,7 +10,19 @@ export function useTasks() {
 
     // Fetch tasks from Supabase
     useEffect(() => {
-        const fetchTasks = async () => {
+        const initAuthAndFetch = async () => {
+            // 1. Ensure User is Signed In (Anonymously)
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            if (!session) {
+                const { error: authError } = await supabase.auth.signInAnonymously();
+                if (authError) {
+                    console.error("Error signing in anonymously:", authError);
+                    return;
+                }
+            }
+
+            // 2. Fetch Tasks (Now secured by RLS!)
             const { data, error } = await supabase
                 .from("tasks")
                 .select("*");
@@ -38,7 +50,7 @@ export function useTasks() {
             setLoading(false);
         };
 
-        fetchTasks();
+        initAuthAndFetch();
     }, []);
 
     const addTask = async (dateKey: string, text: string) => {
